@@ -16,7 +16,7 @@ RUN wget -O /usr/local/bin/check_docker https://raw.githubusercontent.com/timdam
 RUN chmod a+rx /usr/local/bin/check_docker
 
 COPY ./check_postgres /opt/nagios/libexec/check_postgres
-RUN mv /usr/local/bin//check_docker/ /opt/nagios/libexec/check_docker
+RUN mv /usr/local/bin/check_docker/ /opt/nagios/libexec/check_docker
 #COPY ./check_docker/check_docker/check_docker.py /opt/nagios/libexec/check_docker
 #COPY ./check_docker/check_docker/check_swarm.py /opt/nagios/libexec/check_swarm
 
