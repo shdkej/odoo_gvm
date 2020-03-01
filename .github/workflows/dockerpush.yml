@@ -31,10 +31,10 @@ jobs:
         run: docker-compose up -d
       
       - name: Update source file
-        run: docker-compose exec web git pull https://github.com/shdkej/odoo_gvm/addons
+        run: docker-compose exec web bash -c "git pull https://github.com/shdkej/odoo_gvm/addons"
         
       - name: Update config file
-        run: docker-compose exec web cp config.ini.example config.ini
+        run: docker-compose exec web bash -c "cp config.ini.example config.ini"
 
       - name: echo image name
         run: |
