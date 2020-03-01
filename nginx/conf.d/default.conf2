@@ -1,0 +1,90 @@
+server {
+    listen       80;
+    server_name  localhost;
+    client_max_body_size 3000M;
+
+    #charset koi8-r;
+    access_log  /var/log/nginx/host.access.log  main;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+	proxy_pass http://192.168.0.192:8069;
+    }
+
+    #error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+    #
+    #location ~ \.php$ {
+    #    proxy_pass   http://127.0.0.1;
+    #}
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #
+    #location ~ \.php$ {
+    #    root           html;
+    #    fastcgi_pass   127.0.0.1:9000;
+    #    fastcgi_index  index.php;
+    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+    #    include        fastcgi_params;
+    #}
+
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    #
+    #location ~ /\.ht {
+    #    deny  all;
+    #}
+}
+
+server{
+
+    listen 	80;
+#    listen 443 ssl;
+
+#    ssl on;
+#    ssl_certificate /etc/letsencrypt/live/erp.gvmltd.com/fullchain.pem;
+#    ssl_certificate_key /etc/letsencrypt/live/erp.gvmltd.com/privkey.pem;
+#    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+#    ssl_prefer_server_ciphers on;
+#    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+
+    server_name erp.gvmltd.com;
+    client_max_body_size 3000M;
+    access_log  /var/log/nginx/host.access.log  main;
+
+    location / {
+        root   /usr/share/nginx/html;
+	proxy_connect_timeout 300;
+	proxy_send_timeout 300;
+	proxy_read_timeout 300;
+	send_timeout 300;
+	proxy_pass http://192.168.0.192:8069;
+    }
+    location ~/.well-known{
+        allow all;
+    }
+}
+#server{
+#   listen 80;
+#   server_name erp.gvmltd.com;
+#   return 301 https://$host$request_uri;
+#}
+server{
+   listen 8090;
+   location /nginx_status {
+      stub_status on;
+      access_log on;
+   }
+   location / {
+      root   /etc/nginx/report;
+   }
+}

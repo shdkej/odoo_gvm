@@ -1,0 +1,54 @@
+version: '3'
+services:
+  web:
+    image: shdkej/odoo_web:latest
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+      - "8072:8072"
+    volumes:
+      - /home/gvm/samba:/samba
+      - odoo-web-data:/var/lib/odoo
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=myodoo
+    working_dir: /usr/lib/python2.7/dist-packages/odoo/addons/
+  db:
+    image: postgres:9.4
+    #    image: shdkej/odoo_db:latest
+    environment:
+      - POSTGRES_PASSWORD=myodoo
+      - POSTGRES_USER=odoo
+    ports:
+      - "5432:5432"
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+      - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+      - "./nginx/conf.d:/etc/nginx/conf.d"
+      - "./nginx/log:/var/log/nginx/"
+      - "./nginx/report:/etc/nginx/report"
+      - "/etc/letsencrypt:/etc/letsencrypt"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8090:8090"
+
+  nagios4:
+    build:
+      context: ./nagios
+    volumes:
+      - "./nagios/etc:/opt/nagios/etc"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+      - "8080:80" 
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:
