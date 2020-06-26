@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Update config file
-        run: cp config.ini.example config.ini
+        run: cp addons/config.ini.example addons/config.ini
 
       - name: Build image
         run: docker-compose up -d        
