@@ -35,7 +35,7 @@ jobs:
       - name: report test
         run: |
           WORKING_DIR=/usr/lib/python2.7/dist-packages/odoo/addons/
-          ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_web")
+          ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_gvm_web")
           docker ps -a
           echo $ORIGINAL_IMAGE
           docker exec -it $ORIGINAL_IMAGE pip install pytest
@@ -70,7 +70,7 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
 
-          ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_web")
+          ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_gvm_web")
           docker start $ORIGINAL_IMAGE
           docker commit $ORIGINAL_IMAGE $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
