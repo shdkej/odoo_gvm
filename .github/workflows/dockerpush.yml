@@ -38,9 +38,9 @@ jobs:
           ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_gvm_web")
           docker ps -a
           echo $ORIGINAL_IMAGE
-          docker exec -i $ORIGINAL_IMAGE pip install pytest
-          docker exec -i $ORIGINAL_IMAGE pip install pytest-cov
-          docker exec -i $ORIGINAL_IMAGE pytest --cov=./ --cov-report=xml
+          docker exec -i --user root $ORIGINAL_IMAGE pip install pytest
+          docker exec -i --user root $ORIGINAL_IMAGE pip install pytest-cov
+          docker exec -i --user root $ORIGINAL_IMAGE pytest --cov=./ --cov-report=xml
           docker cp $ORIGINAL_IMAGE:$WORKING_DIR/coverage.xml ./coverage.xml
 
       - name: Upload coverage to Codecov
