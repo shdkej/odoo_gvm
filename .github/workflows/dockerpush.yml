@@ -32,24 +32,6 @@ jobs:
       - name: Build image
         run: docker-compose up -d
 
-      - name: report test
-        run: |
-          WORKING_DIR=/usr/lib/python2.7/dist-packages/odoo/addons/
-          ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_gvm_web")
-          docker ps -a
-          echo $ORIGINAL_IMAGE
-          docker exec -i --user root $ORIGINAL_IMAGE pip install pytest
-          docker exec -i --user root $ORIGINAL_IMAGE pip install pytest-cov
-          docker exec -i --user root $ORIGINAL_IMAGE pytest --cov=./ hr/ --cov-report=xml
-          docker cp $ORIGINAL_IMAGE:$WORKING_DIR/coverage.xml ./coverage.xml
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          flags: unittests
-
       - name: docker login
         uses: docker/login-action@v1.6.0
         with:
