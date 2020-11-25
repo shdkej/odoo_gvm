@@ -32,6 +32,22 @@ jobs:
       - name: Build image
         run: docker-compose up -d
 
+      - name: report test
+        run: |
+          WORKING_DIR=/usr/lib/python2.7/dist-packages/odoo/addons/
+          ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_web")
+          docker exec -it $ORIGINAL_IMAGE pip install pytest
+          docker exec -it $ORIGINAL_IMAGE pip install pytest-cov
+          docker exec -it $ORIGINAL_IMAGE pytest --cov=./ --cov-report=xml
+          docker cp $ORIGINAL_IMAGE:$WORKING_DIR/coverage.xml ./coverage.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          flags: unittests
+
       - name: docker login
         uses: docker/login-action@v1.6.0
         with:
@@ -52,25 +68,8 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
 
-          echo "before get image"
           ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_web")
-          echo "before commit"
+          docker start $ORIGINAL_IMAGE
           docker commit $ORIGINAL_IMAGE $IMAGE_ID:$VERSION
-          echo "before push"
           docker push $IMAGE_ID:$VERSION
-
-      - name: report test
-        run: |
-          WORKING_DIR=/usr/lib/python2.7/dist-packages/odoo/addons/
-          ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_web")
-          docker exec -it $ORIGINAL_IMAGE pip install pytest
-          docker exec -it $ORIGINAL_IMAGE pip install pytest-cov
-          docker exec -it $ORIGINAL_IMAGE pytest --cov=./ --cov-report=xml
-          docker cp $ORIGINAL_IMAGE:$WORKING_DIR/coverage.xml ./coverage.xml
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          flags: unittests
+          docker stop $ORIGINAL_IMAGE
