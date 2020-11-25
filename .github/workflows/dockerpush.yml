@@ -52,8 +52,11 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
 
+          echo "before get image"
           ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_web")
+          echo "before commit"
           docker commit $ORIGINAL_IMAGE $IMAGE_ID:$VERSION
+          echo "before push"
           docker push $IMAGE_ID:$VERSION
 
       - name: report test
