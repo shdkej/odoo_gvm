@@ -36,6 +36,8 @@ jobs:
         run: |
           WORKING_DIR=/usr/lib/python2.7/dist-packages/odoo/addons/
           ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_web")
+          docker ps -a
+          echo $ORIGINAL_IMAGE
           docker exec -it $ORIGINAL_IMAGE pip install pytest
           docker exec -it $ORIGINAL_IMAGE pip install pytest-cov
           docker exec -it $ORIGINAL_IMAGE pytest --cov=./ --cov-report=xml
