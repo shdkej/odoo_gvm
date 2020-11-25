@@ -47,7 +47,7 @@ services:
       - "./nagios/etc:/opt/nagios/etc"
       - "/var/run/docker.sock:/var/run/docker.sock"
     ports:
-      - "8080:80" 
+      - "8080:80"
 
 volumes:
   odoo-web-data:
