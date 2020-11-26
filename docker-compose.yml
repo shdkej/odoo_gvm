@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: shdkej/odoo_web:latest
+    image: shdkej/odoo_container:latest
     depends_on:
       - db
     ports:
