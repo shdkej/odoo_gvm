@@ -18,7 +18,7 @@ from odoo.http import request
 
 import os
 import sys
-abspath = sys.path.append(os.path.abspath('gvm/models'))
+abspath = sys.path.append(os.path.abspath('/addons_external/gvm/models'))
 from sendmail import gvm_mail
 
 _logger = logging.getLogger(__name__)
@@ -125,7 +125,7 @@ class GvmPurchaseProduct(models.Model):
     category = fields.Selection([('1','기구/가공품'),('2','기구/요소품'),('3','전장/가공품'),('4','전장/요소품'),('5','기타')])
     product = fields.One2many('gvm.product','purchase_by_maker',string='발주', index=True,track_visibility="onchange")
     purchase_product = fields.Many2many('gvm.product',string='product')
-    
+
     @api.depends('order_man')
     def _compute_department(self):
       for record in self:
@@ -216,7 +216,7 @@ class GvmPurchaseProduct(models.Model):
         issue = last_id.issue
         if not last_id.project_id:
           raise UserError(_('프로젝트를 입력해주세요'))
-	
+
         if last_id.project_id and issue:
           issue.write({'project_id':last_id.project_id.id})
 
@@ -391,7 +391,7 @@ class GvmPurchaseProduct(models.Model):
                value = stock.ponum + ',' + po
               stock.write({'ponum':value})
 
-              product.stock_item = True            
+              product.stock_item = True
               product.product_id = stock.id
 
               # 개수가 모자라면 분할해야 함
@@ -402,19 +402,19 @@ class GvmPurchaseProduct(models.Model):
                 stock.stock = 0
                 remain_count = - (stock_count / self.line_count)
                 remain_product = self.env['gvm.product'].create({
-	          'sequence_num': product.sequence_num, 
-		  'name': product.name, 
-		  'product_name': product.product_name, 
-		  'material': product.material, 
+	          'sequence_num': product.sequence_num,
+		  'name': product.name,
+		  'product_name': product.product_name,
+		  'material': product.material,
 		  'original_count': remain_count,
-		  'etc': product.etc, 
-		  'bad_state': product.bad_state, 
+		  'etc': product.etc,
+		  'bad_state': product.bad_state,
 		  'purchase_by_maker': product.purchase_by_maker.id,
                   'state': 'purchase',
                   'request_date': product.request_date,
                   'project_id': product.project_id,
                 })
-	        etc_text = str('발주 %d 개 중 %d 개 재고 사용' 
+	        etc_text = str('발주 %d 개 중 %d 개 재고 사용'
                  % (product.total_count, (product.total_count + stock_count))).decode('utf-8').encode('utf-8')
                 if product.etc and product.etc != 'false':
                   etc_text += product.etc.encode('utf-8')

@@ -10,6 +10,7 @@ def _parse_holiday():
 	str_tmp = ''
 	solYear = str(datetime.today().year)
 
+
 	for i in range(1,13):
 	  if i<10:
 	    i = '0'+str(i)
