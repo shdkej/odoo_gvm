@@ -53,17 +53,14 @@
       dest: /usr/bin/docker-compose
       mode: '0755'
 
-  - name: Clone source
+  - name: Git Update
     git:
       repo: https://github.com/shdkej/odoo_gvm.git
       dest: /src/odoo_gvm
+      update: yes
 
-  - name: Git Pull and Docker-compose up
-    shell: "{{ item }}"
-    with_items:
-      - cd /src/odoo_gvm
-      - git pull
-      - docker-compose -f docker-compose-prod.yml up -d --build
+  - name: Docker-compose up
+    shell: docker-compose -f /src/odoo_gvm/docker-compose-prod.yml up -d --build
 
   handlers:
   - name: docker status
