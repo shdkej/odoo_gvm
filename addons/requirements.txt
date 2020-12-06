@@ -51,7 +51,7 @@ urllib3==1.9.1
 vatnumber==1.2
 vobject==0.8.1rc0
 watchdog==0.7.0
-Werkzeug==0.9.6
+Werkzeug==0.15.3
 xlrd==1.1.0
 XlsxWriter==0.5.2
 xlwt==0.7.5
