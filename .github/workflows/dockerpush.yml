@@ -11,9 +11,6 @@ on:
 
   pull_request:
 
-  issue_comment:
-    types: [created, edited, deleted]
-
 env:
   IMAGE_NAME: odoo
 
@@ -22,9 +19,6 @@ jobs:
   # See also https://docs.docker.com/docker-hub/builds/
   push:
     runs-on: ubuntu-latest
-    #if: github.event_name == 'push'
-    if: contains(github.event.comment.body, 'DEPLOY')
-
     steps:
       - uses: actions/checkout@v2
 
