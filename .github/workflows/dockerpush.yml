@@ -11,6 +11,9 @@ on:
 
   pull_request:
 
+  issue_comment:
+    types: [created, edited, deleted]
+
 env:
   IMAGE_NAME: odoo
 
