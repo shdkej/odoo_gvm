@@ -43,18 +43,19 @@
      name: ubuntu
      group: docker
 
-  - name: Install docker-compose
-    shell: "{{ item }}"
-    with_items:
-      - curl -L https://github.com/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m` -o /usr/bin/docker-compose
-      - chmod 755 /usr/bin/docker-compose
-      - chmod +x /usr/bin/docker-compose
+  - name: Install docker compose
+    get_url:
+      url: https://github.com/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m`
+      dest: /usr/bin/docker-compose
+      mode: '0755'
 
   - name: Clone source
-    shell: git clone https://github.com/shdkej/odoo_gvm.git
+    git:
+      repo: https://github.com/shdkej/odoo_gvm.git
+      dest: /src/odoo_gvm
 
   - name: Move Directory
-    shell: cd odoo_gvm
+    shell: cd /src/odoo_gvm
 
   - name: Pull source
     shell: git pull
