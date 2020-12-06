@@ -3,7 +3,7 @@ name: Docker
 on:
   push:
     branches:
-      - master
+      - feature/test
 
     # Publish `v1.2.3` tags as releases.
     tags:
@@ -19,7 +19,8 @@ jobs:
   # See also https://docs.docker.com/docker-hub/builds/
   push:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    #if: github.event_name == 'push'
+    if: contains(github.event.comment.body, 'DEPLOY')
 
     steps:
       - uses: actions/checkout@v2

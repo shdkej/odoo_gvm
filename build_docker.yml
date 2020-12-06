@@ -43,9 +43,13 @@
      name: ubuntu
      group: docker
 
+  - name: Set user variable
+    shell: uname -m
+    register: uname
+
   - name: Install docker compose
     get_url:
-      url: https://github.com/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m`
+      url: https://github.com/docker/compose/releases/download/1.24.0/docker-compose-Linux-{{ uname.stdout }}
       dest: /usr/bin/docker-compose
       mode: '0755'
 
@@ -54,14 +58,12 @@
       repo: https://github.com/shdkej/odoo_gvm.git
       dest: /src/odoo_gvm
 
-  - name: Move Directory
-    shell: cd /src/odoo_gvm
-
-  - name: Pull source
-    shell: git pull
-
-  - name: Build
-    shell: docker-compose up -d --build -f docker-compose-prod.yml
+  - name: Git Pull and Docker-compose up
+    shell: "{{ item }}"
+    with_items:
+      - cd /src/odoo_gvm
+      - git pull
+      - docker-compose -f docker-compose-prod.yml up -d --build
 
   handlers:
   - name: docker status
