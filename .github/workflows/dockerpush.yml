@@ -17,9 +17,6 @@ jobs:
       - name: Update config file
         run: cp addons/config.ini.example addons/config.ini
 
-      - name: Build image
-        run: docker-compose up -d
-
       - name: docker login
         uses: docker/login-action@v1.6.0
         with:
