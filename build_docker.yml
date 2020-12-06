@@ -61,3 +61,7 @@
 
   - name: Build
     shell: docker-compose up -d --build -f docker-compose-prod.yml
+
+  handlers:
+  - name: docker status
+    service: name=docker state=started

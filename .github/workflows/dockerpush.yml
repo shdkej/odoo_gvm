@@ -2,7 +2,6 @@ name: Docker
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
     branches:
       - master
 
@@ -10,7 +9,6 @@ on:
     tags:
       - v*
 
-  # Run tests for any PRs.
   pull_request:
 
 env:
@@ -54,5 +52,5 @@ jobs:
 
           #ORIGINAL_IMAGE=$(docker ps -aqf "name=odoo_gvm_web")
           #docker commit $ORIGINAL_IMAGE $IMAGE_ID:$VERSION
-          docker build -t $IMAgE_ID:$VERSION .
+          docker build -t $IMAGE_ID:$VERSION .
           docker push $IMAGE_ID:$VERSION
