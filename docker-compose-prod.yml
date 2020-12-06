@@ -8,7 +8,6 @@ services:
       - "8069:8069"
       - "8072:8072"
     volumes:
-      - ./addons:/addons_external
       - odoo-web-data:/var/lib/odoo
     environment:
       - HOST=db
@@ -17,7 +16,6 @@ services:
     working_dir: /usr/lib/python2.7/dist-packages/odoo/addons
   db:
     image: postgres:9.4
-    #    image: shdkej/odoo_db:latest
     environment:
       - POSTGRES_PASSWORD=myodoo
       - POSTGRES_USER=odoo

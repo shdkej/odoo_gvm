@@ -1,0 +1,29 @@
+name: Build using Ansible
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master, main ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Run playbook
+      uses: dawidd6/action-ansible-playbook@v2
+      with:
+        playbook: build_docker.yml
+        directory: ./
+        key: ${{secrets.SSH_PRIVATE_KEY}}
+        inventory: |
+          [all]
+          193.122.124.65
+        vault_password: ${{secrets.VAULT_PASSWORD}}
+        options: |
+          --verbose
+          -u ubuntu

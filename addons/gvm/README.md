@@ -39,3 +39,4 @@
 <li>gvm 업데이트 시 gvm_mrp가 초기화되므로 반드시 gvm_mrp도 업데이트 해야 함</li>
 </ul>
 <h2 id="메뉴얼">메뉴얼</h2>
+.compose test it need invisible
